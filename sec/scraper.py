@@ -80,11 +80,12 @@ for fund, url in URLS.items():
     # grab results
     print(results)
 
-    driver.close()
 
 
     htmlSource = driver.page_sorce
     print(htmlSource)
+
+    driver.close()
 
 
 
