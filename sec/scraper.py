@@ -82,7 +82,7 @@ for fund, url in URLS.items():
 
 
 
-    htmlSource = driver.page_sorce
+    htmlSource = driver.page_source
     print(htmlSource)
 
     driver.close()
