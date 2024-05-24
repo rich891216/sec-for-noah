@@ -79,9 +79,13 @@ for fund, url in URLS.items():
     wait = WebDriverWait(driver, 5)
     results = wait.until(EC.visibility_of_element_located((By.TAG_NAME, "tbody")))
     htmlSource = driver.page_source
+
+    driver.find_element(By.CLASS_NAME, "dt-button buttons-csv buttons-html5 mr-4")
+
     driver.close()
 
     table = pd.read_html(io.StringIO(htmlSource))
     print(table)
+
 
 print(funds)
