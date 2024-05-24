@@ -36,12 +36,11 @@ for fund, url in URLS.items():
     response_body = page.read()
     decoded = brotli.decompress(response_body)
     html = decoded.decode("utf-8")
-    # print(html)
     
     # split the html string into rows in the table
     rows = html.split('<tr')
-    # print(rows[2])
-    # print("-------------------------")
+
+
     # rows[2] is the first row of data
     data = rows[2].split('<td')
     d = {}
@@ -74,9 +73,6 @@ for fund, url in URLS.items():
     # open chrome (you can use firefox or other browsers, just look up selenium.webdriver)
     chrome_options = webdriver.ChromeOptions()
     download_dir = "~/Downloads/"
-    # chrome_options.add_experimental_option('prefs', {
-    #     'download.default_directory':download_dir
-    # })
 
     chrome_options.add_argument('download.default_directory=' + download_dir)
     driver = webdriver.Chrome(options=chrome_options)
@@ -92,8 +88,6 @@ for fund, url in URLS.items():
     WebDriverWait(driver, 10)
     driver.close()
 
-    # table = pd.read_html(io.StringIO(htmlSource))
-    # print(table)
     file_name = fund + " " + d['quarter'] +" 13F Top Portfolio Holdings.csv"
 
     table = pd.read_csv(download_dir+file_name)
