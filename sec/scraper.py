@@ -71,7 +71,7 @@ for fund, url in URLS.items():
     reference_link = BASE_URL + quarter_data[reference_link_start:reference_link_end]
 
     driver = webdriver.Chrome()
-    driver.get(url)
+    driver.get(reference_link)
     
     wait = WebDriverWait(driver, 5)
     # wait for results to appear
