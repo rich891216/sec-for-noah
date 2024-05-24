@@ -4,6 +4,10 @@ import brotli
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 import time
 
 # put in the urls you want
@@ -68,7 +72,17 @@ for fund, url in URLS.items():
 
     driver = webdriver.Chrome()
     driver.get(url)
-    time.sleep(10)
+    
+    wait = WebDriverWait(driver, 5)
+    # wait for results to appear
+    results = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.gsc-resultsbox-visible")))
+
+    # grab results
+    for link in results.find_elements_by_css_selector("a.gs-title"):
+        print(link.get_attribute("href"))
+
+    driver.close()
+
 
     htmlSource = driver.page_sorce
     print(htmlSource)
@@ -106,8 +120,5 @@ for fund, url in URLS.items():
 
     table = pd.read_html(quarter_html)
     print(table)
-
-
-
 
 print(funds)
