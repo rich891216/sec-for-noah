@@ -72,7 +72,9 @@ for fund, url in URLS.items():
     reference_link = BASE_URL + quarter_data[reference_link_start:reference_link_end]
 
     # open chrome (you can use firefox or other browsers, just look up selenium.webdriver)
-    driver = webdriver.Chrome()
+    chrome_options = webdriver.ChromeOption()
+    prefs = {'download.default_directory=~/Desktop/sec-for-noah'}
+    driver = webdriver.Chrome(chrome_options=chrome_options)
     driver.get(reference_link)
 
     # wait for results
@@ -80,12 +82,14 @@ for fund, url in URLS.items():
     results = wait.until(EC.visibility_of_element_located((By.TAG_NAME, "tbody")))
     htmlSource = driver.page_source
 
-    driver.find_element(By.CLASS_NAME, "dt-button buttons-csv buttons-html5 mr-4")
+    driver.find_element(By.CLASS_NAME, "dt-button buttons-csv buttons-html5 mr-4").click()
 
     driver.close()
 
-    table = pd.read_html(io.StringIO(htmlSource))
-    print(table)
+    # table = pd.read_html(io.StringIO(htmlSource))
+    # print(table)
+    file_name = fund + " " + d['quarter'] +" 13F Top Portfolio Holdings.csv"
 
+    table = pd.read_csv('~/Desktop/sec-for-noah/'+file_name)
 
 print(funds)
