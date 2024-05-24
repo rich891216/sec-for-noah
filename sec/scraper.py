@@ -89,7 +89,9 @@ for fund, url in URLS.items():
 
     driver.find_element(By.XPATH, '//button[contains(span, "Download CSV")]').click()
 
-    WebDriverWait(driver, 60)
+    WebDriverWait(driver, 60).until(
+        EC.presence_of_file_located((By.XPATH, f"//a[contains(@href, '{download_dir}')]"))
+    )
     driver.close()
 
     # table = pd.read_html(io.StringIO(htmlSource))
