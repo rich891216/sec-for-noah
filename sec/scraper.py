@@ -12,7 +12,7 @@ import time
 import io
 
 # put in the urls you want
-URLS = {"Berkshire Hathaway Inc": "https://13f.info/manager/0001067983-berkshire-hathaway-inc"}
+URLS = {"Berkshire Hathaway Inc": "https://13f.info/manager/0001067983-berkshire-hathaway-inc", "CITADEL ADVISORS LLC": "https://13f.info/manager/0001423053-citadel-advisors-llc"}
 session = requests.Session()
 BASE_URL = "http://13f.info"
 funds = {}
@@ -85,7 +85,7 @@ for fund, url in URLS.items():
 
     driver.find_element(By.XPATH, '//button[contains(span, "Download CSV")]').click()
 
-    WebDriverWait(driver, 10)
+    time.sleep(5)
     driver.close()
 
     file_name = fund + " " + d['quarter'] +" 13F Top Portfolio Holdings.csv"
