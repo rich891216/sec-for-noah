@@ -75,11 +75,10 @@ for fund, url in URLS.items():
     
     wait = WebDriverWait(driver, 5)
     # wait for results to appear
-    results = wait.until(EC.visibility_of_element_located((By.ID, "bg-gray-50 even:bg-white hover:bg-gray-200 odd")))
+    results = wait.until(EC.visibility_of_element_located((By.TAG_NAME, "tbody")))
 
     # grab results
-    for link in results.find_elements_by_css_selector("tr"):
-        print(link.get_attribute("href"))
+    print(results)
 
     driver.close()
 
