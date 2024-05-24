@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 import time
+import io
 
 # put in the urls you want
 URLS = {"Berkshire Hathaway Inc": "https://13f.info/manager/0001067983-berkshire-hathaway-inc"}
@@ -65,60 +66,22 @@ for fund, url in URLS.items():
     
     funds[fund] = d
 
-
+    # build reference link
     reference_link_start = quarter_data.find('href="') + len('href="')
     reference_link_end = quarter_data.find('">', reference_link_start)
     reference_link = BASE_URL + quarter_data[reference_link_start:reference_link_end]
 
+    # open chrome (you can use firefox or other browsers, just look up selenium.webdriver)
     driver = webdriver.Chrome()
     driver.get(reference_link)
-    
+
+    # wait for results
     wait = WebDriverWait(driver, 5)
-    # wait for results to appear
     results = wait.until(EC.visibility_of_element_located((By.TAG_NAME, "tbody")))
-
-    # grab results
-    print(results)
-
-
-
     htmlSource = driver.page_source
-    print(htmlSource)
-
     driver.close()
 
-
-
-    # new session for next link
-    session.close()
-    session.get(reference_link)
-    cookies = session.cookies.get_dict()
-    userCookie = "; ".join([str(x)+"="+str(y) for x,y in cookies.items()])
-    headers = {
-    "Accept": "*/*",
-    "Accept-Encoding": "gzip, deflate, br",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    "Cookie": userCookie,
-    'Content-Type': 'application/javascript',
-    'Content-Encoding': 'br'
-    }
-    quarter_request = Request(reference_link)
-    
-    
-    for k, v in headers.items():
-        quarter_request.add_header(k, v)
-
-
-    quarter_page = urlopen(quarter_request)
-    quarter_body = quarter_page.read()
-    quarter_decoded = brotli.decompress(quarter_body)
-    quarter_html = quarter_decoded.decode("utf-8")
-
-    quarter_rows = quarter_html.split('<tr')
-
-    # print(quarter_html)
-
-    table = pd.read_html(quarter_html)
+    table = pd.read_html(io.StringIO(htmlSource))
     print(table)
 
 print(funds)
