@@ -73,23 +73,29 @@ for fund, url in URLS.items():
 
     # open chrome (you can use firefox or other browsers, just look up selenium.webdriver)
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('download.default_directory=~/Desktop/sec-for-noah/')
+    download_dir = "~/Desktop/sec-for-noah/csv_files/"
+    chrome_options.add_experimental_option('prefs', {
+        'download.default_directory':download_dir
+    })
+
+    # chrome_options.add_argument('download.default_directory=~/Desktop/sec-for-noah/csv_files')
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(reference_link)
 
     # wait for results
-    wait = WebDriverWait(driver, 5)
+    wait = WebDriverWait(driver, 10)
     results = wait.until(EC.visibility_of_element_located((By.TAG_NAME, "tbody")))
     htmlSource = driver.page_source
 
     driver.find_element(By.XPATH, '//button[contains(span, "Download CSV")]').click()
 
+    WebDriverWait(driver, 60)
     driver.close()
 
     # table = pd.read_html(io.StringIO(htmlSource))
     # print(table)
     file_name = fund + " " + d['quarter'] +" 13F Top Portfolio Holdings.csv"
 
-    table = pd.read_csv('~/Desktop/sec-for-noah/'+file_name)
+    table = pd.read_csv('~/Desktop/sec-for-noah/csv_files/'+file_name)
 
 print(funds)
