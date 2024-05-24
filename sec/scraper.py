@@ -82,7 +82,7 @@ for fund, url in URLS.items():
     results = wait.until(EC.visibility_of_element_located((By.TAG_NAME, "tbody")))
     htmlSource = driver.page_source
 
-    driver.find_element(By.XPATH, '//button[class()="dt-button buttons-csv buttons-html5 mr-4"]').click()
+    driver.find_element(By.XPATH, '//button[contains(span, "Download CSV")]').click()
 
     driver.close()
 
