@@ -72,9 +72,9 @@ for fund, url in URLS.items():
     reference_link = BASE_URL + quarter_data[reference_link_start:reference_link_end]
 
     # open chrome (you can use firefox or other browsers, just look up selenium.webdriver)
-    options = webdriver.ChromeOptions()
-    options.add_argument('download.default_directory=~/Desktop/sec-for-noah/')
-    driver = webdriver.Chrome(chrome_options=options)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('download.default_directory=~/Desktop/sec-for-noah/')
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get(reference_link)
 
     # wait for results
